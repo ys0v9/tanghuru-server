@@ -24,7 +24,7 @@ public class JwtUtil {
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(String username) { // Generate a JWT Token with username
+    public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
@@ -40,20 +40,20 @@ public class JwtUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject(); // Get subject (username)
+                .getSubject(); // Get subject username
     }
 
     public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    private Date extractExpiration(String token) { // Check if the token is expired
+    private Date extractExpiration(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .getExpiration(); // Return expiration time
+                .getExpiration();
     }
 
     public boolean validateToken(String token, String username) { // Validate token and check username match
